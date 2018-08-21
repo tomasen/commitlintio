@@ -1,29 +1,68 @@
 <template>
-<div class="container">
-  <div class="inputs">
-    <v-select v-model="commitType" :options="allowedType" placeholder="type"></v-select>
-    <v-select v-model="commitScope" :options="[]" placeholder="scope" taggable push-tags></v-select>
-    <b-form-input v-model="commitMessage"
-                  type="text"
-                  placeholder="commit message">
-    </b-form-input>
-    <b-form-textarea v-model="commitMessageBody"
-                     placeholder="optional"
-                     :rows="3"
-                     :max-rows="6">
-   </b-form-textarea>
-   <b-form-textarea v-model="commitMessageFooter"
-                    placeholder="optional"
-                    :rows="3"
-                    :max-rows="6">
-  </b-form-textarea>
-  </div>
-  <div class="message">
-    {{ combinedMessage }}
-  </div>
-  <div class="results" v-html="lintResults">
-  </div>
-</div>
+<b-container class="linterContainer">
+  <b-row>
+    <b-col>
+      <b-form-select v-model="commitType"
+                     :options="allowedType"
+                     placeholder="type">
+        <template slot="first">
+          <!-- this slot appears above the options from 'options' prop -->
+          <option :value="''" disabled>- type -</option>
+        </template>
+      </b-form-select>
+    </b-col>
+    <b-col cols="9">
+      <b-form-input v-model="commitScope" placeholder="scope">
+      </b-form-input>
+    </b-col>
+  </b-row>
+  <b-row>
+    <b-col>
+      <b-form-input v-model="commitMessage"
+                    type="text"
+                    placeholder="commit message">
+      </b-form-input>
+    </b-col>
+  </b-row>
+  <b-row>
+    <b-col>
+      <b-form-textarea v-model="commitMessageBody"
+                       placeholder="body (optional)"
+                       :rows="4"
+                       :max-rows="6">
+     </b-form-textarea>
+   </b-col>
+  </b-row>
+  <b-row>
+    <b-col>
+      <b-form-textarea v-model="commitMessageFooter"
+                      placeholder="footer (optional)"
+                      :rows="1"
+                      :max-rows="6">
+      </b-form-textarea>
+    </b-col>
+  </b-row>
+  <b-row :class="combinedMessage ? '' : 'd-none'">
+    <b-col>
+      <b-card title="Commit Message:">
+        <p class="card-text">
+          {{ combinedMessage }}
+        </p>
+        <b-button href="#"
+                  variant="primary"
+                  :disabled="!isValid">
+                  Copy to Clipboard
+        </b-button>
+      </b-card>
+    </b-col>
+  </b-row>
+  <b-row>
+    <b-col>
+      <b-alert :show="lintResults" :variant="isValid ? 'success' : 'warning'" v-html="lintResults">
+      </b-alert>
+    </b-col>
+  </b-row>
+</b-container>
 </template>
 
 <script>
@@ -39,6 +78,7 @@ export default {
       commitMessage: '',
       commitMessageBody: '',
       commitMessageFooter: '',
+      isValid: true,
     };
   },
   created() {
@@ -72,10 +112,12 @@ export default {
         lint(this.combinedMessage, opts.rules, {})
           .then((report) => {
             if (report.valid) {
+              this.isValid = true;
               resolve('Good to go');
               return;
             }
-            console.log(report);
+            this.isValid = false;
+
             let lintResults = '';
             report.errors.forEach((item) => {
               lintResults += `${item.name}:${item.message} (level: ${item.level} valid: ${item.valid}) <br/>`;
@@ -94,7 +136,6 @@ export default {
             this.lintResults = 'Good to go';
             return;
           }
-          console.log(report);
           this.lintResults = '';
           report.errors.forEach((item) => {
             this.lintResults += `${item.name}:${item.message} (level: ${item.level} valid: ${item.valid}) <br/>`;
@@ -104,3 +145,14 @@ export default {
   },
 };
 </script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.linterContainer {
+  background-color: #86818B;
+  padding: 0.8em;
+}
+.row {
+  padding: 0.2em;
+}
+</style>

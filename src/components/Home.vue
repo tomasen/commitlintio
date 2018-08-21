@@ -1,25 +1,25 @@
 <template>
-  <div class="fullscreen">
-    <div class="navbar">
-      <div class="title">
+  <b-container fluid>
+    <b-row class="navbar">
+      <b-col class="title">
         CIMMITLINT
-      </div>
-      <div class="slogen">
+      </b-col>
+      <b-col class="slogen" cols="5">
         commit message linter online
-      </div>
-      <div class="rules">
-      </div>
-    </div>
-    <div class="container">
+      </b-col>
+      <b-col class="rules">
+      </b-col>
+    </b-row>
+    <b-row class="mainContainer">
       <Linter></Linter>
-    </div>
-    <div class="ads">
+    </b-row>
+    <b-row class="ads">
 
-    </div>
-    <div class="footer">
+    </b-row>
+    <b-row class="footer">
 
-    </div>
-  </div>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
@@ -40,18 +40,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
+.navbar {
+  min-height: 6em;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+.title {
+  font-size: 2.5em;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.mainContainer {
+  background-color: #453E48;
+  padding: 4em 0;
 }
 </style>
