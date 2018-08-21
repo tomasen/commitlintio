@@ -11,9 +11,9 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
-    "build": "npm run patch & node build/build.js",
-    "patch": "cp -f patches/fs.js node_modules/node-libs-browser/mock/fs.js & node scripts/genconfigs.js > src/helper/lintOpts.js",
-    "publish": "cd dist & git add -A & git commit -m 'publishing' & git push & cd .. "
+    "build": "npm run patch && node build/build.js",
+    "patch": "cp -f patches/fs.js node_modules/node-libs-browser/mock/fs.js && node scripts/genconfigs.js > src/helper/lintOpts.js",
+    "publish": "cd dist && git add -A && git commit -m 'publishing' && git push && cd .. "
   },
   "dependencies": {
     "@commitlint/format": "^7.0.0",

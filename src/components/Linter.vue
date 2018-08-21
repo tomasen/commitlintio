@@ -28,7 +28,7 @@
     <b-col>
       <b-form-textarea v-model="commitMessageBody"
                        placeholder="body (optional)"
-                       :rows="4"
+                       :rows="3"
                        :max-rows="6">
      </b-form-textarea>
    </b-col>
@@ -42,7 +42,13 @@
       </b-form-textarea>
     </b-col>
   </b-row>
-  <b-row :class="combinedMessage ? '' : 'd-none'">
+  <b-row :class="isValid ? 'd-none' : ''">
+    <b-col>
+      <b-alert :show="lintResults" :variant="isValid ? 'success' : 'warning'" v-html="lintResults">
+      </b-alert>
+    </b-col>
+  </b-row>
+  <b-row :class="combinedMessage && isValid ? '' : 'd-none'">
     <b-col>
       <b-card title="Commit Message:">
         <p class="card-text">
@@ -54,12 +60,6 @@
                   Copy to Clipboard
         </b-button>
       </b-card>
-    </b-col>
-  </b-row>
-  <b-row>
-    <b-col>
-      <b-alert :show="lintResults" :variant="isValid ? 'success' : 'warning'" v-html="lintResults">
-      </b-alert>
     </b-col>
   </b-row>
 </b-container>
@@ -154,5 +154,12 @@ export default {
 }
 .row {
   padding: 0.2em;
+}
+.card {
+  text-align: left;
+  color: #555555;
+}
+.card-title {
+  font-size: 1.3em;
 }
 </style>

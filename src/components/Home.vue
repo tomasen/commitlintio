@@ -17,7 +17,13 @@
 
     </b-row>
     <b-row class="footer">
-
+      About
+      Usage
+      Tips
+      FAQ
+      Contact
+      Term
+      Home
     </b-row>
   </b-container>
 </template>
