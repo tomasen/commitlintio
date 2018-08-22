@@ -26,6 +26,7 @@
     "module": "^1.2.5",
     "vue": "^2.5.2",
     "vue-async-computed": "^3.4.1",
+    "vue-clipboard2": "^0.2.1",
     "vue-router": "^3.0.1",
     "vue-script2": "^2.0.3",
     "vue-select": "^2.4.0"

@@ -56,11 +56,18 @@
         <p class="card-text"
            v-html="markedCombinedMessage">
         </p>
-        <b-button href="#"
+        <b-button @click="copyToClipboard"
                   variant="primary"
                   :disabled="!isValidCommitMessage">
                   Copy to Clipboard
         </b-button>
+        <b-alert :show="dismissCountDown"
+             dismissible
+             :variant="clipboardSuccess ? 'success': 'warning'"
+             @dismissed="dismissCountDown=0"
+             @dismiss-count-down="countDownChanged">
+          <p>{{ clipboardMessage }}</p>
+        </b-alert>
       </b-card>
     </b-col>
   </b-row>
@@ -82,6 +89,9 @@ export default {
       commitMessageBody: '',
       commitMessageFooter: '',
       isValidCommitMessage: true,
+      clipboardSuccess: true,
+      dismissCountDown: 0,
+      clipboardMessage: '',
     };
   },
   created() {
@@ -119,11 +129,9 @@ export default {
           resolve('please fill in commit message.');
           return;
         }
-        console.log(this.combinedMessage);
         const opts = lintOpts.Angular;
         lint(this.combinedMessage, opts.rules, {})
           .then((report) => {
-            console.log(report);
             if (report.valid) {
               this.isValidCommitMessage = true;
               resolve('');
@@ -135,26 +143,25 @@ export default {
             report.errors.forEach((item) => {
               lintResults += `${item.name}:${item.message} (level: ${item.level} valid: ${item.valid}) <br/>`;
             });
-            console.log(lintResults);
             resolve(lintResults);
           });
       });
     },
   },
   methods: {
-    lint2(combinedMessage) {
-      const opts = lintOpts.Angular;
-      lint(combinedMessage, opts.rules, {})
-        .then((report) => {
-          if (report.valid) {
-            this.lintResults = 'Good to go';
-            return;
-          }
-          this.lintResults = '';
-          report.errors.forEach((item) => {
-            this.lintResults += `${item.name}:${item.message} (level: ${item.level} valid: ${item.valid}) <br/>`;
-          });
-        });
+    countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown;
+    },
+    copyToClipboard() {
+      this.$copyText(this.combinedMessage).then(() => {
+        this.dismissCountDown = 3;
+        this.clipboardSuccess = true;
+        this.clipboardMessage = 'Copied to Clipboard Successed';
+      }, (e) => {
+        this.dismissCountDown = 5;
+        this.clipboardSuccess = false;
+        this.clipboardMessage = `Copied to Clipboard Failed ${e}`;
+      });
     },
   },
 };
