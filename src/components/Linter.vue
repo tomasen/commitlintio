@@ -42,21 +42,23 @@
       </b-form-textarea>
     </b-col>
   </b-row>
-  <b-row :class="isValid ? 'd-none' : ''">
+  <b-row :class="isValidCommitMessage ? 'd-none': ''">
     <b-col>
-      <b-alert :show="lintResults" :variant="isValid ? 'success' : 'warning'" v-html="lintResults">
+      <b-alert variant="warning"
+               :show="!isValidCommitMessage"
+               v-html="lintResults">
       </b-alert>
     </b-col>
   </b-row>
-  <b-row :class="combinedMessage && isValid ? '' : 'd-none'">
+  <b-row :class="combinedMessage && isValidCommitMessage ? '' : 'd-none'">
     <b-col>
       <b-card title="Commit Message:">
-        <p class="card-text">
-          {{ combinedMessage }}
+        <p class="card-text"
+           v-html="markedCombinedMessage">
         </p>
         <b-button href="#"
                   variant="primary"
-                  :disabled="!isValid">
+                  :disabled="!isValidCommitMessage">
                   Copy to Clipboard
         </b-button>
       </b-card>
@@ -67,6 +69,7 @@
 
 <script>
 import lint from '@commitlint/lint';
+import marked from 'marked';
 import lintOpts from '../helper/lintOpts';
 
 export default {
@@ -78,7 +81,7 @@ export default {
       commitMessage: '',
       commitMessageBody: '',
       commitMessageFooter: '',
-      isValid: true,
+      isValidCommitMessage: true,
     };
   },
   created() {
@@ -104,24 +107,35 @@ export default {
       }
       return combinedMessage;
     },
+    markedCombinedMessage() {
+      return marked(this.combinedMessage, { sanitize: true });
+    },
   },
   asyncComputed: {
     lintResults() {
       return new Promise((resolve) => {
+        if (!this.combinedMessage) {
+          this.isValidCommitMessage = false;
+          resolve('please fill in commit message.');
+          return;
+        }
+        console.log(this.combinedMessage);
         const opts = lintOpts.Angular;
         lint(this.combinedMessage, opts.rules, {})
           .then((report) => {
+            console.log(report);
             if (report.valid) {
-              this.isValid = true;
-              resolve('Good to go');
+              this.isValidCommitMessage = true;
+              resolve('');
               return;
             }
-            this.isValid = false;
+            this.isValidCommitMessage = false;
 
             let lintResults = '';
             report.errors.forEach((item) => {
               lintResults += `${item.name}:${item.message} (level: ${item.level} valid: ${item.valid}) <br/>`;
             });
+            console.log(lintResults);
             resolve(lintResults);
           });
       });
