@@ -4,7 +4,7 @@
       <b-col class="title">
         CIMMIT<span class="lighter">LINT</span>
       </b-col>
-      <b-col class="slogen" cols="5">
+      <b-col class="slogen text-left" cols="5">
         lint commit messages online
       </b-col>
       <b-col class="rules">
@@ -12,18 +12,24 @@
       </b-col>
     </b-row>
     <b-row class="mainContainer">
-      <Linter></Linter>
+      <b-col>
+        <Linter></Linter>
+      </b-col>
     </b-row>
     <b-row class="ads">
-      <script2>
-       (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-3236699304584559",
-            enable_page_level_ads: true
-       });
-      </script2>
+      <b-col>
+        <script2>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-3236699304584559",
+              enable_page_level_ads: true
+         });
+        </script2>
+      </b-col>
     </b-row>
-    <b-row class="footer">
-        <b-col v-html="compiledMarkdown" class="text-left">
+    <b-row>
+        <b-col class="text-left">
+          <b-container class="footer" v-html="compiledMarkdown">
+          </b-container>
         </b-col>
     </b-row>
   </b-container>
@@ -67,5 +73,6 @@ export default {
 }
 .footer {
   color: #fefeff;
+  padding: 0.8em;
 }
 </style>

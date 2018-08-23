@@ -14,6 +14,9 @@ export default {
 body {
   background-color: #756A7A;
 }
+a {
+    color: #b2dde5;
+}
 #app {
   font-family: 'Lato', sans-serif;
   font-size: 12pt;

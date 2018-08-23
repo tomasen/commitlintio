@@ -4,15 +4,18 @@
     <b-col>
       <b-form-select v-model="commitType"
                      :options="allowedType"
-                     placeholder="type">
+                     placeholder="type"
+                     v-b-popover.hover.bottom="tipType">
         <template slot="first">
           <!-- this slot appears above the options from 'options' prop -->
-          <option :value="''" disabled>- type -</option>
+          <option :value="''" disabled>&lt;type&gt;</option>
         </template>
       </b-form-select>
     </b-col>
     <b-col cols="9">
-      <b-form-input v-model="commitScope" placeholder="scope">
+      <b-form-input v-model="commitScope"
+                    placeholder="<scope>"
+                    v-b-popover.hover.bottom="tipScope">
       </b-form-input>
     </b-col>
   </b-row>
@@ -20,7 +23,8 @@
     <b-col>
       <b-form-input v-model="commitMessage"
                     type="text"
-                    placeholder="commit message">
+                    placeholder="<subject> succinct description of the change"
+                    v-b-popover.hover.bottom="tipSubject">
       </b-form-input>
     </b-col>
   </b-row>
@@ -29,7 +33,8 @@
       <b-form-textarea v-model="commitMessageBody"
                        placeholder="body (optional)"
                        :rows="3"
-                       :max-rows="6">
+                       :max-rows="6"
+                       v-b-popover.hover.bottom="tipBody">
      </b-form-textarea>
    </b-col>
   </b-row>
@@ -38,7 +43,8 @@
       <b-form-textarea v-model="commitMessageFooter"
                       placeholder="footer (optional)"
                       :rows="1"
-                      :max-rows="6">
+                      :max-rows="6"
+                      v-b-popover.hover.bottom="tipFooter">
       </b-form-textarea>
     </b-col>
   </b-row>
@@ -92,6 +98,16 @@ export default {
       clipboardSuccess: true,
       dismissCountDown: 0,
       clipboardMessage: '',
+      // tooltips
+      tipScope: 'could be anything specifying place of the commit change. For example $location, $browser, $compile, $rootScope, ngHref, ngClick, ngView, etc...',
+      tipSubject: `- use imperative, present tense: "change" not “changed” nor “changes”
+  - don't capitalize first letter
+  - no dot (.) at the end`,
+      tipType: 'must be one of the options',
+      tipBody: `- use imperative, present tense: “change” not “changed” nor “changes”
+- includes motivation for the change and contrasts with previous behavior`,
+      tipFooter: `- contain any information about breaking changes with the description of the change, justification and migration notes
+- reference GitHub issues that this commit Closes. such as closed bugs should be listed in the footer prefixed with "Closes" keyword like: "Closes #234, #241"`,
     };
   },
   created() {
@@ -126,7 +142,7 @@ export default {
       return new Promise((resolve) => {
         if (!this.combinedMessage) {
           this.isValidCommitMessage = false;
-          resolve('please fill in commit message.');
+          resolve('empty commit message');
           return;
         }
         const opts = lintOpts.Angular;
