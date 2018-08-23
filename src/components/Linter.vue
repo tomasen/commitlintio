@@ -114,7 +114,25 @@ export default {
   },
   computed: {
     allowedType() {
-      return lintOpts.Angular.rules['type-enum'][2];
+      const desc = {
+        feat: 'feature',
+        fix: 'bug fix',
+        docs: 'documentation',
+        style: 'formatting, missing semi colons, etc.',
+        refactor: 'neither fixes a bug or adds a feature',
+        test: 'adding missing tests',
+        chore: 'maintain',
+        build: 'build system or external dependencies changes',
+        ci: 'CI configurations and scripts changes',
+        perf: 'improves performance',
+        revert: 'reverts a previous commit',
+      };
+      const options = [];
+      const typeEnum = lintOpts.Angular.rules['type-enum'][2];
+      typeEnum.forEach((item, key) => {
+        options[key] = { value: item, text: `${item}(${desc[item]})` };
+      });
+      return options;
     },
     combinedMessage() {
       let combinedMessage = this.commitType;
