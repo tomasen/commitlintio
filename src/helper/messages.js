@@ -35,4 +35,9 @@ button to copy it to clipboard, and paste to your git client.
 You are welcome to make contact with us by
 [email](mailto:hr@sagittarius.ai) or
 [submit issues](https://github.com/commitlinter/commitlinter.github.io/issues)
+
+### Thanks
+
+- [commitlint](https://github.com/marionebl/commitlint)
+- [commitizen](https://github.com/commitizen/cz-cli)
 `;
