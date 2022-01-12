@@ -16,16 +16,6 @@
         <Linter></Linter>
       </b-col>
     </b-row>
-    <b-row class="ads">
-      <b-col>
-        <script2>
-         (adsbygoogle = window.adsbygoogle || []).push({
-              google_ad_client: "ca-pub-3236699304584559",
-              enable_page_level_ads: true
-         });
-        </script2>
-      </b-col>
-    </b-row>
     <b-row>
         <b-col class="text-left">
           <b-container class="footer" v-html="compiledMarkdown">
