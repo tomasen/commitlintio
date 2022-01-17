@@ -87,6 +87,7 @@ import lintOpts from '@/configs/lintOpts'
 
 export default {
   name: 'Linter',
+  props: ['ruleName'],
   data() {
     return {
       commitType: '',
@@ -128,9 +129,10 @@ export default {
         revert: 'reverts a previous commit',
       };
       const options = [];
-      const typeEnum = lintOpts.Angular.rules['type-enum'][2];
+
+      const rule = lintOpts[this.ruleName]
+      const typeEnum = rule.rules['type-enum'][2];
       typeEnum.forEach((item, key) => {
-        console.log(item, key)
         options[key] = { value: item, text: `${item}(${desc[item]})` };
       });
       return options;
@@ -164,7 +166,8 @@ export default {
           resolve('empty commit message');
           return;
         }
-        lint(this.combinedMessage, lintOpts.Angular.rules, lintOpts.Angular.parserPreset)
+        const rule = lintOpts[this.ruleName]
+        lint(this.combinedMessage, rule.rules, rule.parserPreset)
           .then((report) => {
             if (report.valid) {
               this.isValidCommitMessage = true;

@@ -17,6 +17,7 @@
     "vue": "^2.6.11",
     "vue-async-computed": "^3.9.0",
     "vue-clipboard2": "^0.3.3",
+    "vue-router": "^3.5.3",
     "vue-select": "^3.16.0"
   },
   "devDependencies": {
