@@ -4,7 +4,7 @@
       <b-col class="title">
         CIMMIT<span class="lighter">LINT</span>
       </b-col>
-      <b-col class="slogen text-left" cols="5">
+      <b-col class="slogan text-left" cols="5">
         lint commit messages online
       </b-col>
       <b-col class="rules">
@@ -17,30 +17,30 @@
       </b-col>
     </b-row>
     <b-row>
-        <b-col class="text-left">
-          <b-container class="footer" v-html="compiledMarkdown">
-          </b-container>
-        </b-col>
+      <b-col class="text-left">
+        <b-container class="footer" v-html="compiledMarkdown">
+        </b-container>
+      </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script>
-import marked from 'marked';
+import {marked} from 'marked';
 import Linter from './Linter';
-import msg from '../helper/messages';
+import msg from '@/configs/messages';
 
 export default {
   name: 'Home',
   components: {
-    Linter,
+    Linter
   },
   computed: {
     compiledMarkdown() {
       return marked(msg, { sanitize: true });
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -64,5 +64,6 @@ export default {
 .footer {
   color: #fefeff;
   padding: 0.8em;
+  max-width: 40em;
 }
 </style>

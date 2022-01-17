@@ -30,11 +30,15 @@ button to copy it to clipboard, and paste to your git client.
   we will provide choices of more rules, and also possible
   to set custom rules.
 
+### Sponsor
+
+- [Uplinks.Net - VPN that don't require Installation to Connect](https://uplinks.net)
+
 ### Contact
 
 You are welcome to make contact with us by
-[email](mailto:hr@sagittarius.ai) or
-[submit issues](https://github.com/commitlinter/commitlinter.github.io/issues)
+[email](mailto:tomasen@gmail.com) or
+[submit issues](https://github.com/tomasen/commitlintio/issues)
 
 ### Thanks
 

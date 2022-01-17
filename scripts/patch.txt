@@ -1,0 +1,48 @@
+--- node_modules/conventional-changelog-angular/writer-opts.js	2022-01-17 19:53:13.000000000 +0800
++++ node_modules/conventional-changelog-angular/writer-opts.js	2022-01-17 19:50:41.000000000 +0800
+@@ -2,7 +2,7 @@
+
+ const compareFunc = require('compare-func')
+ const Q = require('q')
+-const readFile = Q.denodeify(require('fs').readFile)
++const readFile = () => {}
+ const resolve = require('path').resolve
+
+ module.exports = Q.all([
+--- node_modules/@commitlint/rules/node_modules/execa/lib/stream.js	2022-01-17 19:53:13.000000000 +0800
++++ node_modules/@commitlint/rules/node_modules/execa/lib/stream.js	2022-01-17 19:50:51.000000000 +0800
+@@ -1,6 +1,6 @@
+ 'use strict';
+ const isStream = require('is-stream');
+-const getStream = require('get-stream');
++// const getStream = require('get-stream');
+ const mergeStream = require('merge-stream');
+
+ // `input` option
+@@ -53,7 +53,7 @@
+ };
+
+ const getStreamPromise = (stream, {encoding, buffer, maxBuffer}) => {
+-	if (!stream || !buffer) {
++	if (true) {
+ 		return;
+ 	}
+
+--- node_modules/@commitlint/rules/node_modules/execa/lib/error.js	2022-01-17 19:53:13.000000000 +0800
++++ node_modules/@commitlint/rules/node_modules/execa/lib/error.js	2022-01-17 19:51:10.000000000 +0800
+@@ -1,5 +1,5 @@
+ 'use strict';
+-const {signalsByName} = require('human-signals');
++// const {signalsByName} = require('human-signals');
+
+ const getErrorPrefix = ({timedOut, timeout, errorCode, signal, signalDescription, exitCode, isCanceled}) => {
+ 	if (timedOut) {
+@@ -43,7 +43,7 @@
+ 	// We normalize them to `undefined`
+ 	exitCode = exitCode === null ? undefined : exitCode;
+ 	signal = signal === null ? undefined : signal;
+-	const signalDescription = signal === undefined ? undefined : signalsByName[signal].description;
++	const signalDescription = undefined;
+
+ 	const errorCode = error && error.code;
+

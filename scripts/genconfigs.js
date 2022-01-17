@@ -1,4 +1,4 @@
-const load = require('@commitlint/load');
+const load = require('@commitlint/load').default;
 const util = require('util');
 
 console.log('/* eslint-disable */');

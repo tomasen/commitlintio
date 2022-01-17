@@ -1,89 +1,89 @@
 <template>
-<b-container class="linterContainer">
-  <b-row>
-    <b-col>
-      <b-form-select v-model="commitType"
-                     :options="allowedType"
-                     placeholder="type"
-                     v-b-popover.hover.bottom="tipType">
-        <template slot="first">
-          <!-- this slot appears above the options from 'options' prop -->
-          <option :value="''" disabled>&lt;type&gt;</option>
-        </template>
-      </b-form-select>
-    </b-col>
-    <b-col cols="9">
-      <b-form-input v-model="commitScope"
-                    placeholder="<scope>"
-                    v-b-popover.hover.bottom="tipScope">
-      </b-form-input>
-    </b-col>
-  </b-row>
-  <b-row>
-    <b-col>
-      <b-form-input v-model="commitMessage"
-                    type="text"
-                    placeholder="<subject> succinct description of the change"
-                    v-b-popover.hover.bottom="tipSubject">
-      </b-form-input>
-    </b-col>
-  </b-row>
-  <b-row>
-    <b-col>
-      <b-form-textarea v-model="commitMessageBody"
-                       placeholder="body (optional)"
-                       :rows="3"
-                       :max-rows="6"
-                       v-b-popover.hover.bottom="tipBody">
-     </b-form-textarea>
-   </b-col>
-  </b-row>
-  <b-row>
-    <b-col>
-      <b-form-textarea v-model="commitMessageFooter"
-                      placeholder="footer (optional)"
-                      :rows="1"
-                      :max-rows="6"
-                      v-b-popover.hover.bottom="tipFooter">
-      </b-form-textarea>
-    </b-col>
-  </b-row>
-  <b-row :class="isValidCommitMessage ? 'd-none': ''">
-    <b-col>
-      <b-alert variant="warning"
-               :show="!isValidCommitMessage"
-               v-html="lintResults">
-      </b-alert>
-    </b-col>
-  </b-row>
-  <b-row :class="combinedMessage && isValidCommitMessage ? '' : 'd-none'">
-    <b-col>
-      <b-card title="Commit Message:">
-        <p class="card-text"
-           v-html="markedCombinedMessage">
-        </p>
-        <b-button @click="copyToClipboard"
-                  variant="primary"
-                  :disabled="!isValidCommitMessage">
-                  Copy to Clipboard
-        </b-button>
-        <b-alert :show="dismissCountDown"
-             dismissible
-             :variant="clipboardSuccess ? 'success': 'warning'"
-             @dismissed="dismissCountDown=0"
-             @dismiss-count-down="countDownChanged">
-          <p>{{ clipboardMessage }}</p>
+  <b-container class="linterContainer">
+    <b-row>
+      <b-col>
+        <b-form-select v-model="commitType"
+                       :options="allowedType"
+                       placeholder="type"
+                       v-b-popover.hover.bottom="tipType">
+          <template slot="first">
+            <!-- this slot appears above the options from 'options' prop -->
+            <option :value="''" disabled>&lt;type&gt;</option>
+          </template>
+        </b-form-select>
+      </b-col>
+      <b-col cols="9">
+        <b-form-input v-model="commitScope"
+                      placeholder="<scope>"
+                      v-b-popover.hover.bottom="tipScope">
+        </b-form-input>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-form-input v-model="commitMessage"
+                      type="text"
+                      placeholder="<subject> succinct description of the change"
+                      v-b-popover.hover.bottom="tipSubject">
+        </b-form-input>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-form-textarea v-model="commitMessageBody"
+                         placeholder="body (optional)"
+                         :rows="3"
+                         :max-rows="6"
+                         v-b-popover.hover.bottom="tipBody">
+       </b-form-textarea>
+     </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-form-textarea v-model="commitMessageFooter"
+                        placeholder="footer (optional)"
+                        :rows="1"
+                        :max-rows="6"
+                        v-b-popover.hover.bottom="tipFooter">
+        </b-form-textarea>
+      </b-col>
+    </b-row>
+    <b-row :class="isValidCommitMessage ? 'd-none': ''">
+      <b-col>
+        <b-alert variant="warning"
+                 :show="!isValidCommitMessage"
+                 v-html="lintResults">
         </b-alert>
-      </b-card>
-    </b-col>
-  </b-row>
-</b-container>
+      </b-col>
+    </b-row>
+    <b-row :class="combinedMessage && isValidCommitMessage ? '' : 'd-none'">
+      <b-col>
+        <b-card title="Commit Message:">
+          <p class="card-text"
+             v-html="markedCombinedMessage">
+          </p>
+          <b-button @click="copyToClipboard"
+                    variant="primary"
+                    :disabled="!isValidCommitMessage">
+                    Copy to Clipboard
+          </b-button>
+          <b-alert :show="dismissCountDown"
+               dismissible
+               :variant="clipboardSuccess ? 'success': 'warning'"
+               @dismissed="dismissCountDown=0"
+               @dismiss-count-down="countDownChanged">
+            <p>{{ clipboardMessage }}</p>
+          </b-alert>
+        </b-card>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
-import lint from '@commitlint/lint';
-import marked from 'marked';
-import lintOpts from '../helper/lintOpts';
+import lint from '@commitlint/lint'
+import {marked} from 'marked'
+import lintOpts from '@/configs/lintOpts'
 
 export default {
   name: 'Linter',
@@ -130,6 +130,7 @@ export default {
       const options = [];
       const typeEnum = lintOpts.Angular.rules['type-enum'][2];
       typeEnum.forEach((item, key) => {
+        console.log(item, key)
         options[key] = { value: item, text: `${item}(${desc[item]})` };
       });
       return options;
@@ -163,8 +164,7 @@ export default {
           resolve('empty commit message');
           return;
         }
-        const opts = lintOpts.Angular;
-        lint(this.combinedMessage, opts.rules, {})
+        lint(this.combinedMessage, lintOpts.Angular.rules, lintOpts.Angular.parserPreset)
           .then((report) => {
             if (report.valid) {
               this.isValidCommitMessage = true;
@@ -206,6 +206,7 @@ export default {
 .linterContainer {
   background-color: #86818B;
   padding: 0.8em;
+  max-width: 40em;
 }
 .row {
   padding: 0.2em;
