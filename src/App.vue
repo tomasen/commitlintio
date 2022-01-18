@@ -17,7 +17,6 @@ export default {
 
 <style>
 body {
-  min-width:20em;
   background-color: #756A7A !important;
 }
 a {
