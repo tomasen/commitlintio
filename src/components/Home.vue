@@ -30,6 +30,16 @@
         </b-container>
       </b-col>
     </b-row>
+    <b-row align-h="center">
+      <b-col cols="4">
+        © 2009-2022 <b-link href="https://tomasen.org">SHENG SHEN</b-link>.
+      </b-col>
+      <b-col cols="4">
+        <b-link href="https://github.com/tomasen/commitlintio">Github</b-link> |
+        <b-link href="https://twitter.com/ShooterPlayer">Twitter</b-link> |
+        <b-link href="https://story.tomasen.org/">Medium</b-link>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 
