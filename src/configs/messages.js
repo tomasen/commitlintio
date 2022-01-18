@@ -26,7 +26,7 @@ Once the commit message passes the linter, you can click the "Copy to Clipboard"
 
   Right now, we provide the convention preset that follow
   [AngularJS Git Commit Message Conventions](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit), [conventional commits](https://conventionalcommits.org/), and [patternplate commit convention](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-patternplate). 
-In the future, we will provide choices of more rules and set custom rules.
+  In the future, we will provide choices of more rules and set custom rules.
 
 ### Sponsor
 
